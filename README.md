@@ -1,3 +1,15 @@
-# Machine Learning Framework 
+# Signal Background Classifier for Higgs -> Tau Tau
 
-This repository will be for testing various ML models.
+Multiclass classification of Higgs (Signal), Genuine Taus and Fake Taus.
+
+## Production
+
+- Select sign of the pair
+- DY Stitching
+- Class Reweighting for NN 
+- Shuffle and add truth labels.
+
+## Analysis 
+
+- Plot distribution of different categories (eg visible mass)
+
