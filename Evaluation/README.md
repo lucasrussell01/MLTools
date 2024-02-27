@@ -1,3 +1,3 @@
 # Evaluation
 
-Inference tasks for trained models.
+Evaluate model performance.

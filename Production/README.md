@@ -1,3 +1,3 @@
 # Production
 
-Generate ROOT files to use as training inputs.
+Production, Selection and Reweighting of tuples. Truth labelling.

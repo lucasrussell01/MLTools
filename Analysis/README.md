@@ -1,3 +1,3 @@
 # Analysis
 
-Convert ROOT files into format suitable for training.
+Tools to analyse properties of produced tuples.
