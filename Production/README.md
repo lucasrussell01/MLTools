@@ -8,5 +8,5 @@
 
 `NNReweight.py` will reweight ggH and VBF contributions to expected cross sections, and all 3 categories (Higgs, Taus, Fakes) so that they have equal importance for training.
 
-`ShuffleMerge.py` will add truth lables and mix different classes for training.
+
 

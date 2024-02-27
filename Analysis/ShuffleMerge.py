@@ -2,30 +2,30 @@ import numpy as np
 import pandas as pd
 from glob import glob
 
-out = "/vols/cms/lcr119/tuples/TauCP/ShuffleMerge/"
+base_dir = '/vols/cms/lcr119/tuples/TauCP/NN_weighted'
+out_dir = '/vols/cms/lcr119/tuples/TauCP/ShuffleMerge'
 
-higgs_ds = ['GluGluHToTauTau_M125', 'VBFHTauTau_M125']
-higgs_files = []
+datasets = glob(f"{base_dir}/*/*.parquet")
 
+# Read in all files and shuffle
+shuffled_df = pd.concat([pd.read_parquet(ds, engine='pyarrow') for ds in datasets], 
+            ignore_index = True).sample(frac=1, random_state = 99).reset_index(drop=True)
 
-for ds in higgs_ds:
-    higgs_files.append(glob(f"/vols/cms/lcr119/tuples/TauCP/TauTau_Weighted/{ds}/*.parquet"))
-    
-df = pd.concat([pd.read_parquet(f, engine='pyarrow') for f in higgs_files], ignore_index = True)
+n_events = len(shuffled_df['weight'])
+print(f"Total number of events available: {n_events}")
 
-df["truth"] = 1 # Higgs
+# Save in several shards 
+shard_size = 10000
 
-df = df.sample(frac = 1, random_state = 22)
-
-events_per_file = 2500
-
-n_shards = len(df["truth"])//2500 
-if len(df["truth"])%2500 != 0:
+n_shards = n_events // shard_size
+if n_events % shard_size != 0:
     n_shards += 1
 
-dfs = [df.iloc[events_per_file*i:events_per_file*(i+1)] for i in range(n_shards)]
+dfs = [shuffled_df.iloc[shard_size*i:shard_size*(i+1)] for i in range(n_shards)]
 
 for i, chunk in enumerate(dfs):
-    chunk.to_parquet(f"{out}Higgs_{i}.parquet", engine='pyarrow')
+    counts = chunk['true_category'].value_counts()
+    print(f"Saving chunk {i}, with {counts.get(0, 0)} Taus {counts.get(1, 1)} Higgs, {counts.get(2, 2)} Bkg")
+    chunk.to_parquet(f"{out_dir}/ShuffleMerge_{i}.parquet", engine='pyarrow')
 
 
