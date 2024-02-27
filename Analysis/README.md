@@ -6,4 +6,4 @@
 
 `plot_histo.py` will read in a dictionary and plot the distribution (with weights).
 
-`ShuffleMerge.py` will add truth lables and mix different classes for training.
+`ShuffleMerge.py` will add truth lables and mix different classes. You should separate the output into Training/Validation and Evaluation Folders.
