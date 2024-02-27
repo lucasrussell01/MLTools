@@ -10,5 +10,5 @@ The general structure is:
 
 This `main` branch will contain a generalised framework, and tools/models.
 
-Different branches can be setup for specific tasks, currently:
+Different branches are being developed for specific tasks, currently:
 - `SignalClassifier`: Multiclass classification for CP Analysis (Higgs, Genuine Tau, and Background)
