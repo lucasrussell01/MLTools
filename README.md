@@ -3,8 +3,8 @@
 This repository provides a framework for various Machine Learning based tasks. 
 
 The general structure is:
-- **Production**: Production, Selection and Reweighting of tuples (including truth labelling)
-- **Analysis**: Tools to analyse properties of produced tuples.
+- **Production**: Production, Selection and Reweighting of tuples.
+- **Analysis**: Analyse properties of tuples. Shuffle and Merge for training (including truth labelling).
 - **Training**: Dataloading and Training. Implementation of various models.
 - **Evaluation**: Evaluate model performance.
 
