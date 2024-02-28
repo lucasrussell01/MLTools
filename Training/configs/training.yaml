@@ -13,6 +13,7 @@ SetupNN: # Model setup
     use_weights     :   True # weighted inputs
 
 Inputs: # Inputs to be used (for DataLoader)
-    feature_list: ['pt_1', 'pt_2', 'eta_1', 'eta_2', 'phi_1', 'phi_2', 
+    truth           : 'true_category' # target variable
+    feature_list    : ['pt_1', 'pt_2', 'eta_1', 'eta_2', 'phi_1', 'phi_2', 
                     'dR', 'm_vis', ] #, 'pt_tt', 'mt_1', 'mt_2', 'mt_lep', 'mt_tot']
     # TODO: Specify these in a separate file later on -> more general
