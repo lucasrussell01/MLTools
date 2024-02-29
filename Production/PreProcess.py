@@ -4,8 +4,9 @@ from glob import glob
 import os
 import json
 from tqdm import tqdm
+from run_info import concat_json
 
-base_dir = '/vols/cms/lcr119/HiggsDNA/output/tt'
+base_dir = '/vols/cms/lcr119/HiggsDNA/output2802/tt'
 
 samples = {
     'DYto2L_M-50_madgraphMLM': {'os': True, 'max_files': None},
@@ -16,16 +17,16 @@ samples = {
     'DYto2L_M-50_4J_madgraphMLM': {'os': True, 'max_files': None},
     'GluGluHToTauTau_M125': {'os': True, 'max_files': None},
     'VBFHTauTau_M125': {'os': True, 'max_files': None},
-    'data_C': {'os': False, 'max_files': 40}
+    'data_C': {'os': False, 'max_files': 50}
           }
 
-out_dir = '/vols/cms/lcr119/tuples/TauCP/Concat1302'
+out_dir = '/vols/cms/lcr119/tuples/TauCP2802/Processed'
 
 def concat_and_save(df_list, save_path):
     save_df = pd.concat(df_list, ignore_index = True)
     save_df.to_parquet(save_path, engine = 'pyarrow')
     
-    
+
 
 for key, sel in samples.items():
     
@@ -35,6 +36,7 @@ for key, sel in samples.items():
     
     # Find files for given dataset
     files = glob(f"{base_dir}/{key}/nominal/*.parquet")[:sel['max_files']] # data
+    concat_json(f"{base_dir}/{key}/nominal/run_info") # concat separate file info
     run_info = json.load(open(f"{base_dir}/{key}/nominal/run_info.json", "r"))
 
     print(f"Processing {len(files)} files for Dataset:\033[1m{key}\033[0m")

@@ -5,8 +5,8 @@ import os
 import json
 from tqdm import tqdm
 
-base_dir = '/vols/cms/lcr119/tuples/TauCP/Concat1302'
-out_dir = '/vols/cms/lcr119/tuples/TauCP/Stitched1502'
+base_dir = '/vols/cms/lcr119/tuples/TauCP2802/Processed'
+# out_dir = '/vols/cms/lcr119/tuples/TauCP2802/Stitched2802'
 
 samples = {
     'DYto2L_M-50_madgraphMLM': {'nJets': 'inc'}, 
@@ -52,11 +52,12 @@ for key, info in samples.items():
     files = glob(f"{base_dir}/{key}/*.parquet")
     print(f"Processing {key}")
     
-    out_path = f"{out_dir}/{key}"
-    if not os.path.exists(out_path):
-        os.makedirs(out_path)
+    out_path = f"{base_dir}/{key}" # overwrite non stitched
+    # if not os.path.exists(out_path):
+    #     os.makedirs(out_path)
+    
     # Copy across the summary json file for downstream reweighting:
-    os.system(f"cp {base_dir}/{key}/Summary.json {out_path}/Summary.json")
+    # os.system(f"cp {base_dir}/{key}/Summary.json {out_path}/Summary.json")
         
     for i, f in enumerate(tqdm(files)):
         # Read the file into a dataframe
@@ -66,6 +67,7 @@ for key, info in samples.items():
         
         save_path = out_path + f"/{key}_STITCHED_{i}.parquet"
         df.to_parquet(save_path, engine = 'pyarrow')
+        os.remove(f) # remove non stitched file
         
 
         

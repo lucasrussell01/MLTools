@@ -7,7 +7,7 @@ import json
 
 
 
-base_dir = "/vols/cms/lcr119/tuples/TauCP/Stitched1502"
+base_dir = "/vols/cms/lcr119/tuples/TauCP2802/Processed"
 
 
 # Dictionary with Samples 
@@ -28,7 +28,7 @@ samples = {
     'data_C': {'type': 0, 'sum_weights': 0 }
           }
 
-out_dir = '/vols/cms/lcr119/tuples/TauCP/NN_weighted'
+out_dir = '/vols/cms/lcr119/tuples/TauCP2802/NN_weighted'
 
 
 higgs_eff_num = np.zeros(2) # ggH and VBF effective numbers
