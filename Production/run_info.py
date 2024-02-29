@@ -8,12 +8,8 @@ def concat_json(folder, delete_origin=False):
         with open(runfile, "r") as f:
             data = json.load(f)
             merged.update(data)
+        if delete_origin:
+            os.remove(runfile)
     with open(f"{folder}/../run_info.json", "w") as f:
         json.dump(merged, f)
     return merged
-
-print(concat_json("/vols/cms/lcr119/HiggsDNA/output2802/tt/DYto2L_M-50_madgraphMLM_ext1/nominal/run_info"))
-
-
-
-

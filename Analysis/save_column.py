@@ -22,7 +22,7 @@ samples = ['DYto2L_M-50_madgraphMLM',
     'VBFHTauTau_M125',
     'data_C']
 
-base_dir = '/vols/cms/lcr119/tuples/TauCP/NN_weighted'
+base_dir = '/vols/cms/lcr119/tuples/TauCP2802/NN_weighted'
 
 print("Extracting columns from Dataframes")
 

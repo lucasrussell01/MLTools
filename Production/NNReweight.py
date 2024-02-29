@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from glob import glob
-from selection_utils import sel_oppositesign, sel_samesign
 import os
 import json
 
