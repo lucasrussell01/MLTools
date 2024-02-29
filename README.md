@@ -12,3 +12,4 @@ This `main` branch will contain a generalised framework, and tools/models.
 
 Different branches are being developed for specific tasks, currently:
 - `SignalClassifier`: Multiclass classification for CP Analysis (Higgs, Genuine Tau, and Background)
+- `FeatureImportance`: Feature importance studies (eg DeepTau)
