@@ -101,26 +101,36 @@ if __name__ == "__main__":
     model = load_model(path_to_model) 
     data_iter = get_iterator(path_to_ds)
     
-    # Unpack one batch for now
-    # TODO: Need to do this for more than one batch 
-    x, y, y_adv, sample_weight, sample_weight_adv = next(data_iter)
+    # Convert inputs
+    
+    
+    
+    x_ana_list = []
+    
+    for i in range(200):
+        x, y, y_adv, sample_weight, sample_weight_adv = next(data_iter)
 
-    # create subnetworks for the grid processing
-    outer_model = tf.keras.Model(inputs=model.input, outputs=model.get_layer(name = "outer_cells_flatten").output)
-    inner_model = tf.keras.Model(inputs=model.input, outputs=model.get_layer(name = "inner_cells_flatten").output)
+        # create subnetworks for the grid processing
+        outer_model = tf.keras.Model(inputs=model.input, outputs=model.get_layer(name = "outer_cells_flatten").output)
+        inner_model = tf.keras.Model(inputs=model.input, outputs=model.get_layer(name = "inner_cells_flatten").output)
+        
+        # Generate the latent space predictions (processed grid inputs)
+        x_out = outer_model(x, training=False)
+        x_in = inner_model(x, training=False)
+        
+        # Create the input tensor for the simplified explainer model
+        x_analysis = tf.concat([x[0], x_in, x_out], axis = 1).numpy()[:100, :] # first 100 taus/batch are SM
+        x_ana_list.append(x_analysis)
+        
+    x_analysis = np.concatenate(x_ana_list)
     
-    # Generate the latent space predictions (processed grid inputs)
-    x_out = outer_model(x, training=False)
-    x_in = inner_model(x, training=False)
-    
-    # Create the input tensor for the simplified explainer model
-    x_analysis = tf.concat([x[0], x_in, x_out], axis = 1).numpy() # (171 inputs)
-    
+
+
     # initialise model
     exp_model = explainer_model(model)
     
     # Save the explainer model to be used for SHAP analysis
-    np.save("inputs.npy", x_analysis)
+    np.save("inputs_20k_ShuffleMerge.npy", x_analysis)
     exp_model.save("explainer_model")
     
     # print(exp_model.summary()

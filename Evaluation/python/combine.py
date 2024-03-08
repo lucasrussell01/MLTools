@@ -5,12 +5,6 @@ import numpy as np
 import shap 
 import matplotlib.pyplot as plt                                  
 tf.compat.v1.disable_v2_behavior()
-    
-def explainer(x, model):
-    # Return a SHAP feature explainer
-    explainer = shap.DeepExplainer(model, x)
-    print("Initialised Explainer!")
-    return explainer
 
 
 if __name__ == "__main__":
@@ -47,22 +41,24 @@ if __name__ == "__main__":
     # Names of the output classes
     class_names = ["e", "mu", "tau", "jet"]
 
-    print("Explainer model loaded, beginning feature importance checks")
+    print(feat_names.shape)
+
+    v1 = np.load("shap_5k_v1.npy")
+    v2 = np.load("shap_5k_v2.npy")
+    v3 = np.load("shap_5k_v3.npy")
+    v4 = np.load("shap_5k_v4.npy")
     
 
-    x = x[0:5000, :]
-    
-    
-    exp = explainer(x, model) 
+    shap_values = np.concatenate([v1, v2, v3, v4], axis = 1)
 
-    shap_values = exp.shap_values(x)
-    np.save("shap_5k_v1", shap_values)
- 
+    print(x.shape)
+    print(shap_values.shape)
+    
     print("SHAP values calculate")
     
-    shap.summary_plot(shap_values, x, feature_names = feat_names, 
-                      class_names = class_names, plot_size=[14,8], max_display=25)
-    plt.savefig('shap_summary_plot_SM_5k_v1.pdf')
+    shap.summary_plot(v1, x[:5000, :])#, feature_names = feat_names, 
+                    #   class_names = class_names, plot_size=[14,8], max_display=25)
+    plt.savefig('shap_summary_plot_COMBINE.pdf')
     
     
 
