@@ -2,7 +2,7 @@ Setup: # General setup
     n               :   250 # N Events/Batch
     n_batches       :   -1 # N batches training
     n_batches_val   :   -1 # N batches validation
-    input_dir       :   "/vols/cms/lcr119/tuples/TauCP/ShuffleMerge/Training" 
+    input_dir       :   "/vols/cms/lcr119/tuples/TauCP2802ShuffleMerge/Training" 
     val_split       :   0.15 # proportion of files to be used for validation
     n_epochs        :   5
     epoch           :   0 # starting epoch
@@ -15,5 +15,6 @@ SetupNN: # Model setup
 Inputs: # Inputs to be used (for DataLoader)
     truth           : 'true_category' # target variable
     feature_list    : ['pt_1', 'pt_2', 'eta_1', 'eta_2', 'phi_1', 'phi_2', 
-                    'dR', 'm_vis', ] #, 'pt_tt', 'mt_1', 'mt_2', 'mt_lep', 'mt_tot']
-    # TODO: Specify these in a separate file later on -> more general
+                    'dR', 'm_vis', 'met', 'met_phi', 'n_jets'] 
+    weights         : 'weight' # Set to None if not needed
+    # TODO: Enable setting features in a separate config

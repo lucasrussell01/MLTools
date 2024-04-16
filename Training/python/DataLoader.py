@@ -17,7 +17,7 @@ class DataLoader:
         self.epoch = self.config["Setup"]["epoch"] # starting epoch
         self.val_split = self.config["Setup"]["val_split"] # training/val split
         
-        self.model_name = self.config["SetupNN"]["model_name"]
+        self.model_name = self.config["SetupNN"]["model_name"] 
         self.dropout_rate = self.config["SetupNN"]["dropout"]
         self.use_weights = self.config["SetupNN"]["use_weights"]
         
@@ -31,8 +31,8 @@ class DataLoader:
         print(f"{len(self.train_files)} files for training || 
                 {len(self.validation_files)} files for validation")
 
-        self.features = self.config["Inputs"]["feature_list"]
-        self.truth = self.config["Inputs"]["truth"]
+        self.features = self.config["Inputs"]["feature_list"] # variable names of input features
+        self.truth = self.config["Inputs"]["truth"] # name of truth variable
         
     def get_generator(self, primary_set = True, show_progress = False, 
                       evaluation = False):
@@ -44,22 +44,22 @@ class DataLoader:
                                 " file list is empty.")
 
         n_batches = self.n_batches if primary_set else self.n_batches_val
-
-        # **********************************************************************     
+ 
         # TODO: Generator one hot truths are currently hard coded -> make config 
-        # **********************************************************************
         def _generator():
             for j in range(len(_files)):
-                df = pd.read_parquet(_files[j]) # TODO: Generalise to any type!
+                # TODO: Generalise to any data format (not flat)
+                df = pd.read_parquet(_files[j]) 
                 for i in range(len(df)):
                     x = (np.snack([df[f][i] for f in self.features]))
                     truth = df[self.truth][i]
                     if evaluation:
-                        # if running evaluation can just compare truth
+                        # Evaluation: simply output truth
                         yield(x, truth)
                     else:
-                        # for training use onehot encoding
-                        y = tf.one_hot(truth, 3) # 0: Tau, 1: Higgs, 2: Bkg
+                        # Training: onehot encoding for multiclass DNN
+                        # TODO: Generalise to arbitrary multiclass...
+                        y = tf.one_hot(truth, 3) 
                         yield(x, y)
 
         return _generator

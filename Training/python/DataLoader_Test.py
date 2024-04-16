@@ -1,6 +1,8 @@
 from DataLoader import DataLoader
 import yaml
 
-# Check that the dataloader is working properly
+# Script to test DataLoader...
 
 config = "../configs/training.yaml"
+
+
