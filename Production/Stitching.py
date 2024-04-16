@@ -4,9 +4,10 @@ from glob import glob
 import os
 import json
 from tqdm import tqdm
+import yaml
 
 base_dir = '/vols/cms/lcr119/tuples/TauCP2802/Processed'
-# out_dir = '/vols/cms/lcr119/tuples/TauCP2802/Stitched2802'
+out_dir = '/vols/cms/lcr119/tuples/TauCP2802/StitchedForKlitos'
 
 samples = {
     'DYto2L_M-50_madgraphMLM': {'nJets': 'inc'}, 
@@ -33,6 +34,7 @@ for key, info in samples.items():
     n_eff_events =  json.load(open(f"{base_dir}/{key}/Summary.json", "r"))["Effective_Events"]
     stitch_info[info['nJets']]['nEff'] += n_eff_events # add to nevents of corresponding category
 
+yaml.dump(stitch_info, open('stitch_info.yaml', 'w'), default_flow_style=False)
 
 # Store stitching information in dictionary
 for key, info in stitch_info.items(): 
