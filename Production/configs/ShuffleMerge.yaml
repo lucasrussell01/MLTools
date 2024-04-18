@@ -1,0 +1,4 @@
+Setup:
+  merge_dir : '/vols/cms/lcr119/tuples/TauCP2802/NN_weighted' # Shuffle/Merge all files in this dir
+  out_dir : '/vols/cms/lcr119/tuples/TauCP2802/ShuffleMerge' # Output directory
+  n_output_files : 10 # Number of output files to make
