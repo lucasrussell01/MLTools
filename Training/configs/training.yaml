@@ -8,8 +8,8 @@ Setup: # General setup
     epoch           :   0 # starting epoch
 
 SetupNN: # Model setup
-    model_name      :   "DNN" 
-    dropout         :   0.0 # Fraction of Dropout regularisation
+    model_name      :   "DNN_Classifier" 
+    dropout         :   0.2 # Fraction of Dropout regularisation
     use_weights     :   True # weighted inputs
     n_outputs       :   3 # Number of outputs
 

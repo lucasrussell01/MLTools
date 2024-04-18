@@ -1,0 +1,23 @@
+hydra:
+  run:
+    dir: outputs/${experiment_name}/${training_cfg.SetupNN.model_name}/${now:%Y-%m-%d_%H-%M-%S}
+defaults:
+  - ../configs@_global_.training_cfg: training
+  - _self_
+
+# mlflow
+path_to_mlflow: mlruns
+experiment_name: ???
+
+pretrained: null
+# pretrained:
+#   run_id : abcdefghijklmnopqrstuvwxyz
+#   experiment_id: 0
+#   starting_model: model_final.tf
+
+# GPU Setup
+gpu_cfg:
+  gpu_mem  : 6.5 # in Gb
+  gpu_index: 0
+  
+  
