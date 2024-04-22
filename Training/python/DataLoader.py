@@ -28,6 +28,7 @@ class DataLoader:
         self.file_path = self.config["Setup"]["input_dir"]
         print(f"Loading files from: {self.file_path}")
         files = glob.glob(self.file_path + "/*.parquet") # TODO: Add file extension in config
+        # np.random.shuffle(files)
         self.train_files, self.val_files = np.split(files, [int(len(files)*(1-self.val_split))])
         print(f"{len(self.train_files)} files for training || {len(self.val_files)} files for validation")
         
