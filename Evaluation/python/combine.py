@@ -10,10 +10,10 @@ tf.compat.v1.disable_v2_behavior()
 if __name__ == "__main__":
     
     # Explainer Model
-    path_to_model = "explainer_model"
+    path_to_model = "/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/explainer_model"
     model = tf.keras.models.load_model(path_to_model) 
     # Dataset with HL and LATENT cell features
-    path_to_ds = "inputs_20k_ShuffleMerge.npy" 
+    path_to_ds = "/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/inputs_100k_ShuffleMerge.npy" 
     x = np.load(path_to_ds)
     
     # TODO: Put these in a config somewhere
@@ -43,10 +43,11 @@ if __name__ == "__main__":
 
     print(feat_names.shape)
 
-    v1 = np.load("shap_5k_v1.npy")
-    v2 = np.load("shap_5k_v2.npy")
-    v3 = np.load("shap_5k_v3.npy")
-    v4 = np.load("shap_5k_v4.npy")
+    v1 = np.load("/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/shap_5k_v1.npy")
+    v2 = np.load("/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/shap_5k_v2.npy")
+    v3 = np.load("/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/shap_5k_v3.npy")
+    v4 = np.load("/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/shap_5k_v4.npy")
+    v100 = np.load("/vols/cms/lcr119/FeatureImportance/MLTools/Evaluation/python/shap_100k.npy")
     
 
     shap_values = np.concatenate([v1, v2, v3, v4], axis = 1)
@@ -56,19 +57,15 @@ if __name__ == "__main__":
     
     print("SHAP values calculate")
     
-    shap.summary_plot(v1, x[:5000, :])#, feature_names = feat_names, 
-                    #   class_names = class_names, plot_size=[14,8], max_display=25)
-    plt.savefig('shap_summary_plot_COMBINE.pdf')
-    
-    
+    # SHAP summary plot for 100k sample
+    for i, class_name in enumerate(class_names):
+        print(i)
+        shap.summary_plot(v100[i], x[:100000, :], feature_names = feat_names, 
+                        class_names = class_names, plot_size=[14,8], max_display=25, show=False)
+        plt.savefig(f'shap_summary_plot_COMBINE_{class_name}.pdf')
+        plt.clf()  # Clear the current figure  
 
     print("SHAP Summary complete!")
-    
-       
-    # print(np.array(shap_values).shape)
-    
-
-    # print(shap_values)
     
     
     
