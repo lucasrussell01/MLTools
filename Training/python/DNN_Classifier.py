@@ -23,7 +23,7 @@ class CustomModel(keras.Model):
         with tf.GradientTape() as tape:
             y_pred = self(x, training=True)
             loss_vec = self.class_loss(y, y_pred)
-            loss = tf.reduce_sum(loss_vec)/tf.cast(n, dtype=tf.float32)
+            loss = tf.reduce_sum(tf.multiply(loss_vec, w))/tf.cast(n, dtype=tf.float32)
             
         # Compute gradients
         trainable_pars = self.trainable_variables
@@ -34,7 +34,7 @@ class CustomModel(keras.Model):
         
         # Update metrics
         self.class_loss_tracker.update_state(loss)
-        self.accuracy.update_state(y, y_pred)
+        self.accuracy.update_state(y, y_pred, sample_weight= w)
 
         # Return a dict mapping metric names to current value (printout)
         metrics_out =  {m.name: m.result() for m in self.metrics}
@@ -50,11 +50,11 @@ class CustomModel(keras.Model):
         
         # Calculate loss
         loss_vec = self.class_loss(y, y_pred)
-        loss = tf.reduce_sum(loss_vec)/tf.cast(n, dtype=tf.float32)
+        loss = tf.reduce_sum(tf.multiply(loss_vec, w))/tf.cast(n, dtype=tf.float32)
         
         # Update the metrics 
         self.class_loss_tracker.update_state(loss)
-        self.accuracy.update_state(y, y_pred)
+        self.accuracy.update_state(y, y_pred, sample_weight= w)
 
         # Return a dict mapping metric names to current value
         metrics_out = {m.name: m.result() for m in self.metrics}
@@ -96,6 +96,7 @@ def compile_model(model):
 
     # model here
     model.compile(loss=None, optimizer=opt, metrics=None)
+    # model.compile(loss=NNLosses.classification_loss, optimizer=opt, metrics=["accuracy"])
     
     # mlflow log
     metrics = {}
