@@ -3,7 +3,7 @@ from tensorflow.keras.models import Model
 from losses import NNLosses
 import mlflow
 
-class FuckYou(keras.Model):
+class CustomModel(keras.Model):
 
     def __init__(self, *args, class_loss=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,7 +85,7 @@ def create_model(dataloader):
 
     # Create model
     # TODO: Do this with a custom training loop in future
-    model = FuckYou(input_flat, output, name=dataloader.model_name)
+    model = CustomModel(input_flat, output, name=dataloader.model_name)
 
     return model
 
