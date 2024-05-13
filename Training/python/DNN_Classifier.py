@@ -23,7 +23,7 @@ class CustomModel(keras.Model):
         with tf.GradientTape() as tape:
             y_pred = self(x, training=True)
             loss_vec = self.class_loss(y, y_pred)
-            loss = tf.reduce_sum(tf.multiply(loss_vec, w))/tf.cast(n, dtype=tf.float32)
+            loss = tf.reduce_sum(tf.multiply(loss_vec, w))/tf.reduce_sum(w)
             
         # Compute gradients
         trainable_pars = self.trainable_variables
@@ -50,7 +50,7 @@ class CustomModel(keras.Model):
         
         # Calculate loss
         loss_vec = self.class_loss(y, y_pred)
-        loss = tf.reduce_sum(tf.multiply(loss_vec, w))/tf.cast(n, dtype=tf.float32)
+        loss = tf.reduce_sum(tf.multiply(loss_vec, w))/tf.reduce_sum(w)
         
         # Update the metrics 
         self.class_loss_tracker.update_state(loss)
@@ -75,6 +75,7 @@ class CustomModel(keras.Model):
     
 def create_model(dataloader):
 
+    # TODO: Architecture could be defined in a config file
     # Architecture
     input_flat = Input(name="input_flat", shape=(dataloader.input_shape[0])) 
     dense_1 = dense_block(input_flat, 50, dropout=dataloader.dropout_rate, n="_dense_1")
@@ -84,7 +85,6 @@ def create_model(dataloader):
     output = Activation("softmax", name="output")(dense_final)
 
     # Create model
-    # TODO: Do this with a custom training loop in future
     model = CustomModel(input_flat, output, name=dataloader.model_name)
 
     return model
@@ -102,6 +102,3 @@ def compile_model(model):
     metrics = {}
     mlflow.log_dict(metrics, 'input_cfg/metric_names.json')
 
-
-# TODO: Define custom model:
-# class DNN_ClassificationModel(keras.Model):
